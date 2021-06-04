@@ -2,9 +2,7 @@ wheel==0.23.0
 numpy
 pandas
 matplotlib
-PyStan==2.19.1.1
 streamlit
 plotly
-fbprophet
 sklearn
 gunicorn

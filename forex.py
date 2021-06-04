@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
-from fbprophet.plot import plot_cross_validation_metric
 from plotly import __version__
 #import cufflinks as cf
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
