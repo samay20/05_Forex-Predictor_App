@@ -3,6 +3,7 @@
 
 
 import streamlit as st
+st. set_page_config(layout="wide")
 from PIL import Image
 import numpy as np
 import pandas as pd
@@ -16,6 +17,7 @@ import plotly.graph_objs as go
 import plotly.graph_objects as go
 import plotly.express as px
 import pickle
+import datetime
 
 model_usd_daily = pickle.load(open('./Saved_Models_Pickle/model_usd_daily.pkl','rb'))
 model_inr_daily = pickle.load(open('./Saved_Models_Pickle/model_inr_daily.pkl','rb'))
@@ -236,7 +238,7 @@ df_us_monthly['month'] = df_us_monthly['ds'].dt.month
 
 
 ## Base Graph
-fig_base_us_monthly = px.line(df_us_monthly[:-3], x='ds', y='y', hover_data=['nifty_prev_month', 'inflation_cad_usd'], title = ' Monthly Exchange Rates: CAD->USD Ex. 1 CAD = 0.80 USD', labels={"ds": "Month, Year", "y": "Historical Rate", "nifty_prev_month": 'NIFTY', 'inflation_cad_usd': 'Monthly Inflation', })
+fig_base_us_monthly = px.line(df_us_monthly[:-3], x='ds', y='y', hover_data=['nifty_prev_month', 'inflation_cad_usd'], title = ' Monthly Exchange Rates: CAD->USD Ex. 1 CAD = 0.80 USD', labels={"ds": "Month, Year", "y": "Historical Rate", "nifty_prev_month": 'NYSE', 'inflation_cad_usd': 'Monthly Inflation', })
 fig_base_us_monthly.update_xaxes(rangeslider_visible=False, rangeselector=dict( buttons=list([
             dict(count=6, label="6m", step="month", stepmode="backward"),
             dict(count=2, label="2y", step="year", stepmode="todate"),
@@ -377,16 +379,16 @@ df_gbp_monthly.columns = ['ds','y','LSE', 'inflation_cad_gbp', 'lse_prev_month',
 df_gbp_monthly['month'] = df_gbp_monthly['ds'].dt.month
 ## Base Graph
 
-fig_base_gbp_monthy = px.line(df_gbp_monthly[:-3], x='ds', y='y', hover_data=['LSE', 'inflation_cad_gbp', 'lse_prev_month', 'price_rollingmean_lastquarter', 'month'], title = ' Monthly Exchange Rates: CAD->GBP Ex. 1 CAD = 0.59 GBP',labels={ "ds": "Time Period (Years 2004 - Present)","y": "Exchange Rate" })
+fig_base_gbp_monthly = px.line(df_gbp_monthly[:-3], x='ds', y='y', hover_data=['LSE', 'inflation_cad_gbp', 'lse_prev_month', 'price_rollingmean_lastquarter', 'month'], title = ' Monthly Exchange Rates: CAD->GBP Ex. 1 CAD = 0.59 GBP',labels={ "ds": "Time Period (Years 2004 - Present)","y": "Exchange Rate" })
 
-fig_base_gbp_monthy.update_xaxes(rangeslider_visible=True,rangeselector=dict(buttons=list([
+fig_base_gbp_monthly.update_xaxes(rangeslider_visible=True,rangeselector=dict(buttons=list([
             dict(count=6, label="6m", step="month", stepmode="backward"),
             dict(count=2, label="2y", step="year", stepmode="todate"),
             dict(count=5, label="5y", step="year", stepmode="backward"),
             dict(count=10, label="10y", step="year", stepmode="backward"),
             dict(step="all")])))
-fig_base_gbp_monthy.layout.update(title_x=0.5)
-fig_base_gbp_monthy.update_layout(width=1000, font_color='grey')
+fig_base_gbp_monthly.layout.update(title_x=0.5)
+fig_base_gbp_monthly.update_layout(width=1000, font_color='grey')
 
 fig_gbp_monthly_volatality = px.line(data_gbp_monthly[:-4], x=data_gbp_monthly.index[:-4],y= data_gbp_monthly['gbp_close'].diff(1)[:-4], hover_data=['gbp_open','gbp_high','gbp_low','gbp_close'], title = 'Market Volatality', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_gbp_monthly_volatality.update_xaxes(rangeslider_visible=False)
@@ -476,7 +478,7 @@ df_us_daily.columns = ['ds','y','nifty_prev', 'inflation_cad_usd', 'close_yester
 df_us_daily['month'] = df_us_daily['ds'].dt.month
 
 ## Base Graph
-fig_base_us_daily = px.line(round(df_us_daily[:-84],2), x='ds', y='y', hover_data=['nifty_prev', 'inflation_cad_usd', 'close_yesterday', 'month'], title = ' Daily Exchange Rates: CAD->USD Ex. 1 CAD = 0.80 USD', labels={ "ds": "Year  ", "y": "Price  ", 'nifty_prev':'NIFTY  ', 'inflation_cad_usd':'Inflation  ', 'close_yesterday':'Previous Close  ' })
+fig_base_us_daily = px.line(round(df_us_daily[:-84],2), x='ds', y='y', hover_data=['nifty_prev', 'inflation_cad_usd', 'close_yesterday', 'month'], title = ' Daily Exchange Rates: CAD->USD Ex. 1 CAD = 0.80 USD', labels={ "ds": "Year  ", "y": "Price  ", 'nifty_prev':'NYSE  ', 'inflation_cad_usd':'Inflation  ', 'close_yesterday':'Previous Close  ' })
 fig_base_us_daily.update_xaxes(rangeslider_visible=False, rangeselector=dict( buttons=list([
             dict(count=6, label="6m", step="month", stepmode="backward"),
             dict(count=2, label="2y", step="year", stepmode="todate"),
@@ -673,6 +675,7 @@ usa_daily_components_breakdown_image = Image.open('./Images/02_USD_Daily_Compone
 inr_daily_components_breakdown_image = Image.open('./Images/03_INR_Daily_Component_Plots.png')
 gbp_daily_components_breakdown_image = Image.open('./Images/04_GBP_Daily_Component_Plots.png')
 
+
 # st.image(image, width = 300)
 #
 # st.title('Forex Predictor App')
@@ -699,120 +702,117 @@ st.sidebar.markdown(add_space, unsafe_allow_html=True)
 st.sidebar.header('Predict Exchange Rate against CAD,')
 
 ## Sidebar - Currency price unit
-selected_currency = st.sidebar.selectbox('Select Currency', ['none','USD','INR','GBP'])
-prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
-
-if prediction_type == 'Daily':
-    if selected_currency == 'USD':
-        period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
-        data_usd_daily.index = data_usd_daily.index.strftime("%Y-%m-%d")
-        st.title('CAD to USD Current Market,')
-        st.plotly_chart(fig_base_us_daily)
-        cols = st.beta_columns(2)
-        cols[0].write(data_usd_daily.sort_index(ascending=False)[84:])
-        cols[1].plotly_chart(fig_usd_daily_volatality)
-        cols[1].markdown(""" <grey><center> Volatality of USD Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
-        st.markdown(add_space, unsafe_allow_html=True)
-        st.title('CAD to USD Forecasts,')
-        cols = st.beta_columns(2)
-        cols[0].write(multivariate_usd_daily_test['Predicted'][:period])
-        cols[1].markdown(""" Few lines about these predictions, <br> explain the process <br> and algorithm used <br> to predict these outcomes. <br> dsfdsfdsfgfhghghghgdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf.""", unsafe_allow_html=True)
-        st.title('Explore Forecast with Plots to gain more insights,')
-        st.image(usa_daily_components_breakdown_image, width=700)
+selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
+# prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
 
 
-    elif selected_currency == 'INR':
-        period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
-        data_inr_daily.index = data_inr_daily.index.strftime("%Y-%m-%d")
-        st.title('CAD to INR Current Market,')
-        st.plotly_chart(fig_base_inr_daily)
-        cols = st.beta_columns(2)
-        cols[0].write(data_inr_daily.sort_index(ascending=False)[84:])
-        cols[1].plotly_chart(fig_inr_daily_volatality)
-        cols[1].markdown(""" <grey><center> Volatality of INR Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
-        st.markdown(add_space, unsafe_allow_html=True)
-        st.title('CAD to INR Forecasts,')
-        cols = st.beta_columns(2)
-        cols[0].write(multivariate_inr_daily_test['Predicted'][:period])
-        cols[1].markdown(""" Few lines about these predictions, <br> explain the process <br> and algorithm used <br> to predict these outcomes. <br> dsfdsfdsfgfhghghghgdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf.""", unsafe_allow_html=True)
-        st.title('Explore Forecast with Plots to gain more insights,')
-        st.image(inr_daily_components_breakdown_image, width=700)
 
-    elif selected_currency == 'GBP':
-        period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
-        data_gbp_daily.index = data_gbp_daily.index.strftime("%Y-%m-%d")
-        st.title('CAD to GBP Current Market,')
-        st.plotly_chart(fig_base_gbp_daily)
-        cols = st.beta_columns(2)
-        cols[0].write(data_gbp_daily.sort_index(ascending=False)[84:])
-        cols[1].plotly_chart(fig_gbp_daily_volatality)
-        cols[1].markdown(""" <grey><center> Volatality of GBP Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
-        st.markdown(add_space, unsafe_allow_html=True)
-        st.title('CAD to GBP Forecasts,')
-        cols = st.beta_columns(2)
-        cols[0].write(multivariate_gbp_daily_test['Predicted'][:period])
-        cols[1].markdown(""" Few lines about these predictions, <br> explain the process <br> and algorithm used <br> to predict these outcomes. <br> dsfdsfdsfgfhghghghgdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf.""", unsafe_allow_html=True)
-        st.title('Explore Forecast with Plots to gain more insights,')
-        st.image(gbp_daily_components_breakdown_image, width=700)
-
-    else:
-        pass
+if selected_currency == 'CAD to USD Daily':
+    period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
+    data_usd_daily.index = data_usd_daily.index.strftime("%Y-%m-%d")
+    st.title('CAD to USD Current Market,')
+    st.plotly_chart(fig_base_us_daily)
+    cols = st.beta_columns(2)
+    cols[0].write(data_usd_daily.sort_index(ascending=False)[84:])
+    cols[1].plotly_chart(fig_usd_daily_volatality)
+    cols[1].markdown(""" <grey><center> Volatality of USD Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
+    st.markdown(add_space, unsafe_allow_html=True)
+    st.title('CAD to USD Forecasts,')
+    cols = st.beta_columns(2)
+    cols[0].write(multivariate_usd_daily_test['Predicted'][:period])
+    cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> NYSE, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
+    st.title('Explore Forecast with Plots to gain more insights,')
+    st.image(usa_daily_components_breakdown_image, width=700)
 
 
-elif prediction_type == 'Monthly':
+
+elif selected_currency == 'CAD to INR Daily':
+    period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
+    data_inr_daily.index = data_inr_daily.index.strftime("%Y-%m-%d")
+    st.title('CAD to INR Current Market,')
+    st.plotly_chart(fig_base_inr_daily)
+    cols = st.beta_columns(2)
+    cols[0].write(data_inr_daily.sort_index(ascending=False)[84:])
+    cols[1].plotly_chart(fig_inr_daily_volatality)
+    cols[1].markdown(""" <grey><center> Volatality of INR Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
+    st.markdown(add_space, unsafe_allow_html=True)
+    st.title('CAD to INR Forecasts,')
+    cols = st.beta_columns(2)
+    cols[0].write(multivariate_inr_daily_test['Predicted'][:period])
+    cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> SENSEX, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
+    st.title('Explore Forecast with Plots to gain more insights,')
+    st.image(inr_daily_components_breakdown_image, width=700)
+
+elif selected_currency == 'CAD to GBP Daily':
+    period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
+    data_gbp_daily.index = data_gbp_daily.index.strftime("%Y-%m-%d")
+    st.title('CAD to GBP Current Market,')
+    st.plotly_chart(fig_base_gbp_daily)
+    cols = st.beta_columns(2)
+    cols[0].write(data_gbp_daily.sort_index(ascending=False)[84:])
+    cols[1].plotly_chart(fig_gbp_daily_volatality)
+    cols[1].markdown(""" <grey><center> Volatality of GBP Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
+    st.markdown(add_space, unsafe_allow_html=True)
+    st.title('CAD to GBP Forecasts,')
+    cols = st.beta_columns(2)
+    cols[0].write(multivariate_gbp_daily_test['Predicted'][:period])
+    cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> LSE, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
+    st.title('Explore Forecast with Plots to gain more insights,')
+    st.image(gbp_daily_components_breakdown_image, width=700)
+
+
+
+elif selected_currency == 'CAD to USD Monthly':
     period = st.sidebar.slider('Slide to select # of Months:', 1, 4)
-
-    if selected_currency == 'USD':
-        data_usd_monthly.index = data_usd_monthly.index.strftime("%Y-%m")
-        st.title('CAD to USD Current Market,')
-        st.plotly_chart(fig_base_us_monthly)
-        cols = st.beta_columns(2)
-        cols[0].write(data_usd_monthly.sort_index(ascending=False)[4:])
-        cols[1].plotly_chart(fig_usd_monthly_volatality)
-        cols[1].markdown(""" <grey><center> Volatality of USD Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
-        st.markdown(add_space, unsafe_allow_html=True)
-        st.title('CAD to USD Forecasts,')
-        cols = st.beta_columns(2)
-        cols[0].write(multivariate_usd_monthly_test['Predicted'][:period])
-        cols[1].markdown(""" Few lines about these predictions, <br> explain the process <br> and algorithm used <br> to predict these outcomes. <br> dsfdsfdsfgfhghghghgdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf.""", unsafe_allow_html=True)
-        st.title('Explore Forecast with Plots to gain more insights,')
-        st.image(usa_daily_components_breakdown_image, width=700)
+    data_usd_monthly.index = data_usd_monthly.index.strftime("%Y-%m")
+    st.title('CAD to USD Current Market,')
+    st.plotly_chart(fig_base_us_monthly)
+    cols = st.beta_columns(2)
+    cols[0].write(data_usd_monthly.sort_index(ascending=False)[4:])
+    cols[1].plotly_chart(fig_usd_monthly_volatality)
+    cols[1].markdown(""" <grey><center> Volatality of USD Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
+    st.markdown(add_space, unsafe_allow_html=True)
+    st.title('CAD to USD Forecasts,')
+    cols = st.beta_columns(2)
+    cols[0].write(multivariate_usd_monthly_test['Predicted'][:period])
+    cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> NYSE, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
+    st.title('Explore Forecast with Plots to gain more insights,')
+    st.image(usa_daily_components_breakdown_image, width=700)
 
 
-    elif selected_currency == 'INR':
-        data_inr_monthly.index = data_inr_monthly.index.strftime("%Y-%m-%d")
-        st.title('CAD to INR Current Market,')
-        st.plotly_chart(fig_base_inr_monthly)
-        cols = st.beta_columns(2)
-        cols[0].write(data_inr_monthly.sort_index(ascending=False)[84:])
-        cols[1].plotly_chart(fig_inr_monthly_volatality)
-        cols[1].markdown(""" <grey><center> Volatality of INR Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
-        st.markdown(add_space, unsafe_allow_html=True)
-        st.title('CAD to INR Forecasts,')
-        cols = st.beta_columns(2)
-        cols[0].write(multivariate_inr_monthly_test['Predicted'][:period])
-        cols[1].markdown(""" Few lines about these predictions, <br> explain the process <br> and algorithm used <br> to predict these outcomes. <br> dsfdsfdsfgfhghghghgdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf.""", unsafe_allow_html=True)
-        st.title('Explore Forecast with Plots to gain more insights,')
-        st.image(inr_monthly_components_breakdown_image, width=700)
+elif selected_currency == 'CAD to INR Monthly':
+    data_inr_monthly.index = data_inr_monthly.index.strftime("%Y-%m-%d")
+    st.title('CAD to INR Current Market,')
+    st.plotly_chart(fig_base_inr_monthly)
+    cols = st.beta_columns(2)
+    cols[0].write(data_inr_monthly.sort_index(ascending=False)[4:])
+    cols[1].plotly_chart(fig_inr_monthly_volatality)
+    cols[1].markdown(""" <grey><center> Volatality of INR Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
+    st.markdown(add_space, unsafe_allow_html=True)
+    st.title('CAD to INR Forecasts,')
+    cols = st.beta_columns(2)
+    cols[0].write(multivariate_inr_monthly_test['Predicted'][:period])
+    cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> SENSEX, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
+    st.title('Explore Forecast with Plots to gain more insights,')
+    st.image(inr_monthly_components_breakdown_image, width=700)
 
-    elif selected_currency == 'GBP':
-        data_gbp_monthly.index = data_gbp_monthly.index.strftime("%Y-%m-%d")
-        st.title('CAD to GBP Current Market,')
-        st.plotly_chart(fig_base_gbp_monthly)
-        cols = st.beta_columns(2)
-        cols[0].write(data_gbp_monthly.sort_index(ascending=False)[84:])
-        cols[1].plotly_chart(fig_gbp_monthly_volatality)
-        cols[1].markdown(""" <grey><center> Volatality of GBP Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
-        st.markdown(add_space, unsafe_allow_html=True)
-        st.title('CAD to GBP Forecasts,')
-        cols = st.beta_columns(2)
-        cols[0].write(multivariate_gbp_monthly_test['Predicted'][:period])
-        cols[1].markdown(""" Few lines about these predictions, <br> explain the process <br> and algorithm used <br> to predict these outcomes. <br> dsfdsfdsfgfhghghghgdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf <br> dsfdsfdsfdsfd <br> dsfdsfdsfdsfdf.""", unsafe_allow_html=True)
-        st.title('Explore Forecast with Plots to gain more insights,')
-        st.image(gbp_monthly_components_breakdown_image, width=700)
+elif selected_currency == 'CAD to GBP Monthly':
+    data_gbp_monthly.index = data_gbp_monthly.index.strftime("%Y-%m-%d")
+    st.title('CAD to GBP Current Market,')
+    st.plotly_chart(fig_base_gbp_monthly)
+    cols = st.beta_columns(2)
+    cols[0].write(data_gbp_monthly.sort_index(ascending=False)[4:])
+    cols[1].plotly_chart(fig_gbp_monthly_volatality)
+    cols[1].markdown(""" <grey><center> Volatality of GBP Market (2004-2021) </center></grey> """, unsafe_allow_html= True)
+    st.markdown(add_space, unsafe_allow_html=True)
+    st.title('CAD to GBP Forecasts,')
+    cols = st.beta_columns(2)
+    cols[0].write(multivariate_gbp_monthly_test['Predicted'][:period])
+    cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> LSE, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
+    st.title('Explore Forecast with Plots to gain more insights,')
+    st.image(gbp_daily_components_breakdown_image, width=700)
 
 else:
-
     st.sidebar.markdown("""
         Please select *Currency* and type of *Prediction*!!!
     """)
@@ -821,7 +821,54 @@ def main():
     st.write('Please select Currency and type of prediction!')
 #df = load_data()
 
+# Sidebar
+st.sidebar.subheader('Date to obtain best prediction for,')
+start_date = st.sidebar.date_input("Start date", datetime.date(2021, 6, 7))
+end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
+
+submit = st.sidebar.button('Get Best Date!')
+if submit:
+    if selected_currency == 'CAD to USD Daily':
+        forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
+        temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_daily2['ds'] <= pd.to_datetime(end_date))]
+        temp_value = np.min(temp_df['yhat'].values)
+        st.sidebar.write('best month,')
+        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    elif selected_currency == 'CAD to INR Daily':
+        forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
+        temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_daily2['ds'] <= pd.to_datetime(end_date))]
+        temp_value = np.min(temp_df['yhat'].values)
+        st.sidebar.write('best month,')
+        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    elif selected_currency == 'CAD to GBP Daily':
+        forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
+        temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_daily2['ds'] <= pd.to_datetime(end_date))]
+        temp_value = np.min(temp_df['yhat'].values)
+        st.sidebar.write('best day,')
+        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    elif selected_currency == 'CAD to USD Monthly':
+        forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
+        temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_monthly2['ds'] <= pd.to_datetime(end_date))]
+        temp_value = np.min(temp_df['yhat'].values)
+        st.sidebar.write('best month,')
+        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    elif selected_currency == 'CAD to INR Monthly':
+        forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
+        temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_monthly2['ds'] <= pd.to_datetime(end_date))]
+        temp_value = np.min(temp_df['yhat'].values)
+        st.sidebar.write('best month,')
+        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    elif selected_currency == 'CAD to GBP Daily':
+        forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
+        temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_monthly2['ds'] <= pd.to_datetime(end_date))]
+        temp_value = np.min(temp_df['yhat'].values)
+        st.sidebar.write('best month,')
+        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    else:
+        st.sidebar.write('Prediction not available!')
+
 st.header('Forex Predictor')
+st.markdown(""" """)
 
 #st.write(df)
 
