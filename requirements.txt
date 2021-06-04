@@ -1,7 +1,7 @@
 numpy
 pandas
 matplotlib
-pystan==2.19.1.1
+PyStan==2.19.1.1
 streamlit
 plotly
 fbprophet
