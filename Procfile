@@ -1,1 +1,1 @@
-web: gunicorn forex.py:app
+web: gunicorn forex:app
