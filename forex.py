@@ -3,7 +3,6 @@
 
 
 import streamlit as st
-st. set_page_config(layout="wide")
 from PIL import Image
 import numpy as np
 import pandas as pd
