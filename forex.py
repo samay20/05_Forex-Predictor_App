@@ -10,6 +10,8 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from plotly import __version__
 #import cufflinks as cf
+from fbprophet import Prophet
+
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
 import plotly.graph_objs as go
 import plotly.graph_objects as go
