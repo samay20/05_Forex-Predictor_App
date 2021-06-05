@@ -826,44 +826,46 @@ def main():
 # Sidebar
 st.sidebar.subheader('Date to obtain best prediction for,')
 start_date = st.sidebar.date_input("Start date", datetime.date(2021, 6, 7))
+start_date = time.strptime(start_date,"%d/%m/%Y")
 end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
+end_date = time.strptime(end_date,"%d/%m/%Y")
 
 submit = st.sidebar.button('Get Best Date!')
 if submit:
     if (start_date < pd.to_datetime('2021-6-4')) | (end_date > pd.to_datetime('2021-6-4')):
         if selected_currency == 'CAD to USD Daily':
             forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
-            temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_daily2['ds'] <= pd.to_datetime(end_date))]
+            temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > start_date) & (forecast_usd_daily2['ds'] <= end_date)]
             temp_value = np.min(temp_df['yhat'].values)
             st.sidebar.write('best day,')
             st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
         elif selected_currency == 'CAD to INR Daily':
             forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
-            temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_daily2['ds'] <= pd.to_datetime(end_date))]
+            temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > start_date) & (forecast_inr_daily2['ds'] <= end_date)]
             temp_value = np.min(temp_df['yhat'].values)
             st.sidebar.write('best day,')
             st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
         elif selected_currency == 'CAD to GBP Daily':
             forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
-            temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_daily2['ds'] <= pd.to_datetime(end_date))]
+            temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > start_date) & (forecast_gbp_daily2['ds'] <= end_date)]
             temp_value = np.min(temp_df['yhat'].values)
             st.sidebar.write('best day,')
             st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
         elif selected_currency == 'CAD to USD Monthly':
             forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
-            temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_monthly2['ds'] <= pd.to_datetime(end_date))]
+            temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > start_date) & (forecast_usd_monthly2['ds'] <= end_date)]
             temp_value = np.min(temp_df['yhat'].values)
             st.sidebar.write('best month,')
             st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
         elif selected_currency == 'CAD to INR Monthly':
             forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
-            temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_monthly2['ds'] <= pd.to_datetime(end_date))]
+            temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > start_date) & (forecast_inr_monthly2['ds'] <= end_date)]
             temp_value = np.min(temp_df['yhat'].values)
             st.sidebar.write('best month,')
             st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
         elif selected_currency == 'CAD to GBP Daily':
             forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
-            temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_monthly2['ds'] <= pd.to_datetime(end_date))]
+            temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > start_date) & (forecast_gbp_monthly2['ds'] <= end_date)]
             temp_value = np.min(temp_df['yhat'].values)
             st.sidebar.write('best month,')
             st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
