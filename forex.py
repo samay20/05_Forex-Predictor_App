@@ -830,42 +830,45 @@ end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
 
 submit = st.sidebar.button('Get Best Date!')
 if submit:
-    if selected_currency == 'CAD to USD Daily':
-        forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
-        temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_daily2['ds'] <= pd.to_datetime(end_date))]
-        temp_value = np.min(temp_df['yhat'].values)
-        st.write('best day,')
-        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-    elif selected_currency == 'CAD to INR Daily':
-        forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
-        temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_daily2['ds'] <= pd.to_datetime(end_date))]
-        temp_value = np.min(temp_df['yhat'].values)
-        st.write('best day,')
-        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-    elif selected_currency == 'CAD to GBP Daily':
-        forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
-        temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_daily2['ds'] <= pd.to_datetime(end_date))]
-        temp_value = np.min(temp_df['yhat'].values)
-        st.write('best day,')
-        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-    elif selected_currency == 'CAD to USD Monthly':
-        forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
-        temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_monthly2['ds'] <= pd.to_datetime(end_date))]
-        temp_value = np.min(temp_df['yhat'].values)
-        st.write('best month,')
-        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-    elif selected_currency == 'CAD to INR Monthly':
-        forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
-        temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_monthly2['ds'] <= pd.to_datetime(end_date))]
-        temp_value = np.min(temp_df['yhat'].values)
-        st.write('best month,')
-        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-    elif selected_currency == 'CAD to GBP Daily':
-        forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
-        temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_monthly2['ds'] <= pd.to_datetime(end_date))]
-        temp_value = np.min(temp_df['yhat'].values)
-        st.write('best month,')
-        st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+    if (pd.to_datetime(start_date) < '2021-6-4') | (pd.to_datetime(start_date) > '2021-9-30'):
+        if selected_currency == 'CAD to USD Daily':
+            forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
+            temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_daily2['ds'] <= pd.to_datetime(end_date))]
+            temp_value = np.min(temp_df['yhat'].values)
+            st.sidebar.write('best day,')
+            st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+        elif selected_currency == 'CAD to INR Daily':
+            forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
+            temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_daily2['ds'] <= pd.to_datetime(end_date))]
+            temp_value = np.min(temp_df['yhat'].values)
+            st.sidebar.write('best day,')
+            st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+        elif selected_currency == 'CAD to GBP Daily':
+            forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
+            temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_daily2['ds'] <= pd.to_datetime(end_date))]
+            temp_value = np.min(temp_df['yhat'].values)
+            st.sidebar.write('best day,')
+            st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+        elif selected_currency == 'CAD to USD Monthly':
+            forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
+            temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_monthly2['ds'] <= pd.to_datetime(end_date))]
+            temp_value = np.min(temp_df['yhat'].values)
+            st.sidebar.write('best month,')
+            st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+        elif selected_currency == 'CAD to INR Monthly':
+            forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
+            temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_inr_monthly2['ds'] <= pd.to_datetime(end_date))]
+            temp_value = np.min(temp_df['yhat'].values)
+            st.sidebar.write('best month,')
+            st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+        elif selected_currency == 'CAD to GBP Daily':
+            forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
+            temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > pd.to_datetime(start_date)) & (forecast_gbp_monthly2['ds'] <= pd.to_datetime(end_date))]
+            temp_value = np.min(temp_df['yhat'].values)
+            st.sidebar.write('best month,')
+            st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
+        else:
+            st.sidebar.write('Prediction not available!')
     else:
         st.sidebar.write('Prediction not available!')
 
@@ -875,21 +878,7 @@ st.markdown(""" """)
 #st.write(df)
 
 #st.write( df.transpose() )
-#
-import streamlit as st
-from PIL import Image
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
-from fbprophet.plot import plot_cross_validation_metric
-from plotly import __version__
-#import cufflinks as cf
-from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
-import plotly.graph_objs as go
-import plotly.graph_objects as go
-import plotly.express as px
-import pickle
+
 #---------------------------------#
 # About
 expander_bar = st.beta_expander("About")
