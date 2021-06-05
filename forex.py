@@ -6,7 +6,7 @@ import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from plotly import __version__
 #import cufflinks as cf
