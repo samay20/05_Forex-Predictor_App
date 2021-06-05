@@ -1,1 +1,1 @@
-web: gunicorn forex:app
+web: sh setup.sh && streamlit run forex.py
