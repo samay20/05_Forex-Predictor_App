@@ -781,6 +781,7 @@ elif selected_currency == 'CAD to USD Monthly':
 
 
 elif selected_currency == 'CAD to INR Monthly':
+    period = st.sidebar.slider('Slide to select # of Months:', 1, 4)
     data_inr_monthly.index = data_inr_monthly.index.strftime("%Y-%m-%d")
     st.title('CAD to INR Current Market,')
     st.plotly_chart(fig_base_inr_monthly)
@@ -797,6 +798,7 @@ elif selected_currency == 'CAD to INR Monthly':
     st.image(inr_monthly_components_breakdown_image, width=700)
 
 elif selected_currency == 'CAD to GBP Monthly':
+    period = st.sidebar.slider('Slide to select # of Months:', 1, 4)
     data_gbp_monthly.index = data_gbp_monthly.index.strftime("%Y-%m-%d")
     st.title('CAD to GBP Current Market,')
     st.plotly_chart(fig_base_gbp_monthly)
