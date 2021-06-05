@@ -1,8 +1,6 @@
-wheel==0.23.0
 numpy
 pandas
 matplotlib
 streamlit
 plotly
-sklearn
 gunicorn
