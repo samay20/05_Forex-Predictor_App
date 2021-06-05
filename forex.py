@@ -9,7 +9,7 @@ import pandas as pd
 # import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from plotly import __version__
-import cufflinks as cf
+# import cufflinks as cf
 from fbprophet import Prophet
 
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
