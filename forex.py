@@ -9,7 +9,7 @@ import pandas as pd
 # import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 from plotly import __version__
-#import cufflinks as cf
+import cufflinks as cf
 from fbprophet import Prophet
 
 from plotly.offline import download_plotlyjs, init_notebook_mode, plot, iplot
@@ -369,7 +369,7 @@ fig_inr_monthly_range.update_xaxes(rangeslider_visible=False, rangeselector=dict
 fig_inr_monthly_range.update_layout(width=630, height=400,  font_color='grey')
 inr_monthly_analytics = df_inr_monthly[['month','y']].groupby('month').agg({'y':{'mean','std'}})
 
-
+  
 
 ###### ------ GBP Monthly Forecast ------ ####
 

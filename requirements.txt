@@ -1,7 +1,7 @@
-streamlit==0.61.0
-pandas==0.25.3
-numpy==1.18.1
-scikit-learn==0.22.1
+streamlit==0.82.0
+pandas==1.2.4
+numpy==1.20.3
+scikit-learn==0.24.2
 pillow==8.2.0
 plotly==4.14.3
 pickleshare==0.7.5
