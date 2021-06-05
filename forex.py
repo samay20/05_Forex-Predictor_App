@@ -266,13 +266,13 @@ df_us_monthly['month_bins'] = pd.cut(df_us_monthly['month'], bins=3, labels=Fals
 train_usd_monthly = df_us_monthly[df_us_monthly['ds'] < '2021-05-01'][1:] ##removing NaN's
 test_usd_monthly = df_us_monthly[df_us_monthly['ds'] >= '2021-05-01']
 
-future_usd_monthly = model_usd_monthly.make_future_dataframe(periods=5, freq='M')
-future_usd_monthly['nifty'] = df_us_monthly['nifty']
-future_usd_monthly['inflation_cad_usd'] = df_us_monthly['inflation_cad_usd']
-future_usd_monthly['nifty_prev_month'] = df_us_monthly['nifty_prev_month']
-future_usd_monthly['price_rollingmean_lastquarter'] = df_us_monthly['price_rollingmean_lastquarter']
-future_usd_monthly['high_rate'] = df_us_monthly['high_rate']
-future_usd_monthly['month_bins'] = df_us_monthly['month_bins']
+# future_usd_monthly = model_usd_monthly.make_future_dataframe(periods=5, freq='M')
+# future_usd_monthly['nifty'] = df_us_monthly['nifty']
+# future_usd_monthly['inflation_cad_usd'] = df_us_monthly['inflation_cad_usd']
+# future_usd_monthly['nifty_prev_month'] = df_us_monthly['nifty_prev_month']
+# future_usd_monthly['price_rollingmean_lastquarter'] = df_us_monthly['price_rollingmean_lastquarter']
+# future_usd_monthly['high_rate'] = df_us_monthly['high_rate']
+# future_usd_monthly['month_bins'] = df_us_monthly['month_bins']
 forecast_usd_monthly = model_usd_monthly.predict(future_usd_monthly[2:])
 
 multivariate_usd_monthly_test = pd.DataFrame(forecast_usd_monthly.ds[-5:].reset_index(drop=True))
@@ -337,13 +337,13 @@ df_inr_monthly['month_bins'] = pd.cut(df_inr_monthly['month'], bins=3, labels=Fa
 train_inr_monthly = df_inr_monthly[df_inr_monthly['ds'] < '2021-05-01'][1:] ##removing NaN's
 test_inr_monthly = df_inr_monthly[df_inr_monthly['ds'] >= '2021-05-01']
 
-future_inr_monthly = model_inr_monthly.make_future_dataframe(periods=5, freq='M')
-future_inr_monthly['sensex'] = df_inr_monthly['sensex']
-future_inr_monthly['inflation_cad_inr'] = df_inr_monthly['inflation_cad_inr']
-future_inr_monthly['sensex_prev_month'] = df_inr_monthly['sensex_prev_month']
-future_inr_monthly['price_rollingmean_lastquarter'] = df_inr_monthly['price_rollingmean_lastquarter']
-future_inr_monthly['high_rate'] = df_inr_monthly['high_rate']
-future_inr_monthly['month_bins'] = df_inr_monthly['month_bins']
+# future_inr_monthly = model_inr_monthly.make_future_dataframe(periods=5, freq='M')
+# future_inr_monthly['sensex'] = df_inr_monthly['sensex']
+# future_inr_monthly['inflation_cad_inr'] = df_inr_monthly['inflation_cad_inr']
+# future_inr_monthly['sensex_prev_month'] = df_inr_monthly['sensex_prev_month']
+# future_inr_monthly['price_rollingmean_lastquarter'] = df_inr_monthly['price_rollingmean_lastquarter']
+# future_inr_monthly['high_rate'] = df_inr_monthly['high_rate']
+# future_inr_monthly['month_bins'] = df_inr_monthly['month_bins']
 forecast_inr_monthly = model_inr_monthly.predict(future_inr_monthly[2:])
 
 multivariate_inr_monthly_test = pd.DataFrame(forecast_inr_monthly.ds[-5:].reset_index(drop=True))
@@ -369,7 +369,7 @@ fig_inr_monthly_range.update_xaxes(rangeslider_visible=False, rangeselector=dict
 fig_inr_monthly_range.update_layout(width=630, height=400,  font_color='grey')
 inr_monthly_analytics = df_inr_monthly[['month','y']].groupby('month').agg({'y':{'mean','std'}})
 
-  
+
 
 ###### ------ GBP Monthly Forecast ------ ####
 
@@ -408,13 +408,13 @@ df_gbp_monthly['month_bins'] = pd.cut(df_gbp_monthly['month'], bins=3, labels=Fa
 train_gbp_monthly = df_gbp_monthly[df_gbp_monthly['ds'] < '2021-05-01'][1:] ##removing NaN's
 test_gbp_monthly = df_gbp_monthly[df_gbp_monthly['ds'] >= '2021-05-01']
 
-future_gbp_monthly = model_gbp_monthly.make_future_dataframe(periods=5, freq='M')
-future_gbp_monthly['LSE'] = df_gbp_monthly['LSE']
-future_gbp_monthly['inflation_cad_gbp'] = df_gbp_monthly['inflation_cad_gbp']
-future_gbp_monthly['lse_prev_month'] = df_gbp_monthly['lse_prev_month']
-future_gbp_monthly['price_rollingmean_lastquarter'] = df_gbp_monthly['price_rollingmean_lastquarter']
-future_gbp_monthly['high_rate'] = df_gbp_monthly['high_rate']
-future_gbp_monthly['month_bins'] = df_gbp_monthly['month_bins']
+# future_gbp_monthly = model_gbp_monthly.make_future_dataframe(periods=5, freq='M')
+# future_gbp_monthly['LSE'] = df_gbp_monthly['LSE']
+# future_gbp_monthly['inflation_cad_gbp'] = df_gbp_monthly['inflation_cad_gbp']
+# future_gbp_monthly['lse_prev_month'] = df_gbp_monthly['lse_prev_month']
+# future_gbp_monthly['price_rollingmean_lastquarter'] = df_gbp_monthly['price_rollingmean_lastquarter']
+# future_gbp_monthly['high_rate'] = df_gbp_monthly['high_rate']
+# future_gbp_monthly['month_bins'] = df_gbp_monthly['month_bins']
 forecast_gbp_monthly = model_gbp_monthly.predict(future_gbp_monthly[2:])
 
 multivariate_gbp_monthly_test = pd.DataFrame(forecast_gbp_monthly.ds[-5:].reset_index(drop=True))
@@ -506,12 +506,12 @@ df_us_daily['month_bins'] = pd.cut(df_us_daily['month'], bins=3, labels=False)
 train_usd_daily = df_us_daily[df_us_daily['ds'] < '2021-05-01'][1:] ##removing NaN's
 test_usd_daily = df_us_daily[df_us_daily['ds'] >= '2021-05-01']
 
-future_usd_daily = model_usd_daily.make_future_dataframe(periods=109, freq='B')
-future_usd_daily['nifty_prev'] = df_us_daily['nifty_prev']
-future_usd_daily['inflation_cad_usd'] = df_us_daily['inflation_cad_usd']
-future_usd_daily['close_yesterday'] = df_us_daily['close_yesterday']
-future_usd_daily['high_rate'] = df_us_daily['high_rate']
-future_usd_daily['month_bins'] = df_us_daily['month_bins']
+# future_usd_daily = model_usd_daily.make_future_dataframe(periods=109, freq='B')
+# future_usd_daily['nifty_prev'] = df_us_daily['nifty_prev']
+# future_usd_daily['inflation_cad_usd'] = df_us_daily['inflation_cad_usd']
+# future_usd_daily['close_yesterday'] = df_us_daily['close_yesterday']
+# future_usd_daily['high_rate'] = df_us_daily['high_rate']
+# future_usd_daily['month_bins'] = df_us_daily['month_bins']
 forecast_usd_daily = model_usd_daily.predict(future_usd_daily[1:])
 
 multivariate_usd_daily_test = pd.DataFrame(forecast_usd_daily.ds[-109:].reset_index(drop=True))
@@ -572,12 +572,12 @@ df_inr_daily['month_bins'] = pd.cut(df_inr_daily['month'], bins=3, labels=False)
 train_inr_daily = df_inr_daily[df_inr_daily['ds'] < '2021-05-01'][1:] ##removing NaN's
 test_inr_daily = df_inr_daily[df_inr_daily['ds'] >= '2021-05-01']
 
-future_inr_daily = model_inr_daily.make_future_dataframe(periods=109, freq='B')
-future_inr_daily['sensex_prev'] = df_inr_daily['sensex_prev']
-future_inr_daily['inflation_cad_inr'] = df_inr_daily['inflation_cad_inr']
-future_inr_daily['close_yesterday'] = df_inr_daily['close_yesterday']
-future_inr_daily['high_rate'] = df_inr_daily['high_rate']
-future_inr_daily['month_bins'] = df_inr_daily['month_bins']
+# future_inr_daily = model_inr_daily.make_future_dataframe(periods=109, freq='B')
+# future_inr_daily['sensex_prev'] = df_inr_daily['sensex_prev']
+# future_inr_daily['inflation_cad_inr'] = df_inr_daily['inflation_cad_inr']
+# future_inr_daily['close_yesterday'] = df_inr_daily['close_yesterday']
+# future_inr_daily['high_rate'] = df_inr_daily['high_rate']
+# future_inr_daily['month_bins'] = df_inr_daily['month_bins']
 forecast_inr_daily = model_inr_daily.predict(future_inr_daily[1:])
 
 multivariate_inr_daily_test = pd.DataFrame(forecast_inr_daily.ds[-109:].reset_index(drop=True))
@@ -638,12 +638,12 @@ df_gbp_daily['month_bins'] = pd.cut(df_gbp_daily['month'], bins=3, labels=False)
 train_gbp_daily = df_gbp_daily[df_gbp_daily['ds'] < '2021-05-01'][1:] ##removing NaN's
 test_gbp_daily = df_gbp_daily[df_gbp_daily['ds'] >= '2021-05-01']
 
-future_gbp_daily = model_gbp_daily.make_future_dataframe(periods=109, freq='B')
-future_gbp_daily['LSE_prev'] = df_gbp_daily['LSE_prev']
-future_gbp_daily['inflation_cad_gbp'] = df_gbp_daily['inflation_cad_gbp']
-future_gbp_daily['close_yesterday'] = df_gbp_daily['close_yesterday']
-future_gbp_daily['high_rate'] = df_gbp_daily['high_rate']
-future_gbp_daily['month_bins'] = df_gbp_daily['month_bins']
+# future_gbp_daily = model_gbp_daily.make_future_dataframe(periods=109, freq='B')
+# future_gbp_daily['LSE_prev'] = df_gbp_daily['LSE_prev']
+# future_gbp_daily['inflation_cad_gbp'] = df_gbp_daily['inflation_cad_gbp']
+# future_gbp_daily['close_yesterday'] = df_gbp_daily['close_yesterday']
+# future_gbp_daily['high_rate'] = df_gbp_daily['high_rate']
+# future_gbp_daily['month_bins'] = df_gbp_daily['month_bins']
 forecast_gbp_daily = model_gbp_daily.predict(future_gbp_daily[1:])
 
 multivariate_gbp_daily_test = pd.DataFrame(forecast_gbp_daily.ds[-109:].reset_index(drop=True))
