@@ -830,7 +830,7 @@ end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
 
 submit = st.sidebar.button('Get Best Date!')
 if submit:
-    if (pd.to_datetime(start_date) < '2021-6-4') | (pd.to_datetime(start_date) > '2021-9-30'):
+    if (start_date < pd.to_datetime('2021-6-4')) | (end_date > pd.to_datetime('2021-6-4')):
         if selected_currency == 'CAD to USD Daily':
             forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
             temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > pd.to_datetime(start_date)) & (forecast_usd_daily2['ds'] <= pd.to_datetime(end_date))]
