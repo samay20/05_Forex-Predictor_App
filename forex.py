@@ -676,8 +676,7 @@ image = Image.open('logo3.png')
 usa_daily_components_breakdown_image = Image.open('./Images/02_USD_Daily_Component_Plots.png')
 inr_daily_components_breakdown_image = Image.open('./Images/03_INR_Daily_Component_Plots.png')
 gbp_daily_components_breakdown_image = Image.open('./Images/04_GBP_Daily_Component_Plots.png')
-
-
+forex_ref_image = Image.open('./Images/rupee-dollar.jpeg')
 # st.image(image, width = 300)
 #
 # st.title('Forex Predictor App')
@@ -706,8 +705,7 @@ st.sidebar.header('Predict Exchange Rate against CAD,')
 # ## Sidebar - Currency price unit
 # selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
 # # prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
-selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
-
+selected_currency = st.sidebar.selectbox('Select Currency', ['Step 1: Select Currency','CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
 
 @st.cache(suppress_st_warning=True)
 def load_data(selected_currency):
@@ -819,9 +817,17 @@ def load_data(selected_currency):
         st.image(gbp_daily_components_breakdown_image, width=700)
 
     else:
-        st.sidebar.markdown("""
-            Please select *Currency* and type of *Prediction*!!!
-        """)
+        st.markdown("""
+            <h1 style="color:#4267B2;"> Forex Predictor Application </h1><br>
+            <h2>How it works,</h2>
+            <h4>Step1: From the left panel, please select approprite Currency and Frequency for Prediction.</h4>
+            <h4>Step2: Select Currency, Start and End dates to obtain Prediction</h4> <br>
+        """, unsafe_allow_html= True)
+        st.markdown("""
+            <br><h6><i>uncollapse to know more about the app!</i></h6>
+        """, unsafe_allow_html= True)
+
+
 
 
 
@@ -840,54 +846,56 @@ def check_submit(start_date, end_date, selected_currency):
         forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
         temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > start_date) & (forecast_usd_daily2['ds'] <= end_date)]
         temp_value = np.min(temp_df['yhat'].values)
-        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0].date
+        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0]
         value = round(temp_df[temp_df['yhat']==temp_value]['yhat'].iloc[0],4)
 
     elif (selected_currency == 'CAD to INR Daily') & ((pd.to_datetime('2021-6-4') < pd.to_datetime(start_date) < pd.to_datetime('2021-9-30'))) & ((pd.to_datetime('2021-6-4') < pd.to_datetime(end_date) < pd.to_datetime('2021-9-30'))) & (pd.to_datetime(start_date) < pd.to_datetime(end_date)):
         forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
         temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > start_date) & (forecast_inr_daily2['ds'] <= end_date)]
         temp_value = np.min(temp_df['yhat'].values)
-        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0].date
+        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0]
         value = round(temp_df[temp_df['yhat']==temp_value]['yhat'].iloc[0],4)
 
     elif (selected_currency == 'CAD to GBP Daily') & ((pd.to_datetime('2021-6-4') < pd.to_datetime(start_date) < pd.to_datetime('2021-9-30'))) & ((pd.to_datetime('2021-6-4') < pd.to_datetime(end_date) < pd.to_datetime('2021-9-30'))) & (pd.to_datetime(start_date) < pd.to_datetime(end_date)):
         forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
         temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > start_date) & (forecast_gbp_daily2['ds'] <= end_date)]
         temp_value = np.min(temp_df['yhat'].values)
-        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0].date
+        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0]
         value = round(temp_df[temp_df['yhat']==temp_value]['yhat'].iloc[0],4)
 
     elif (selected_currency == 'CAD to USD Monthly') & ((pd.to_datetime('2021-6-4') < pd.to_datetime(start_date) < pd.to_datetime('2021-9-30'))) & ((pd.to_datetime('2021-6-4') < pd.to_datetime(end_date) < pd.to_datetime('2021-9-30'))) & (pd.to_datetime(start_date) < pd.to_datetime(end_date)):
         forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
         temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > start_date) & (forecast_usd_monthly2['ds'] <= end_date)]
         temp_value = np.min(temp_df['yhat'].values)
-        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0].date
+        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0]
         value = round(temp_df[temp_df['yhat']==temp_value]['yhat'].iloc[0],4)
 
     elif (selected_currency == 'CAD to INR Monthly') & ((pd.to_datetime('2021-6-4') < pd.to_datetime(start_date) < pd.to_datetime('2021-9-30'))) & ((pd.to_datetime('2021-6-4') < pd.to_datetime(end_date) < pd.to_datetime('2021-9-30'))) & (pd.to_datetime(start_date) < pd.to_datetime(end_date)):
         forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
         temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > start_date) & (forecast_inr_monthly2['ds'] <= end_date)]
         temp_value = np.min(temp_df['yhat'].values)
-        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0].date
+        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0]
         value = round(temp_df[temp_df['yhat']==temp_value]['yhat'].iloc[0],4)
 
     elif (selected_currency == 'CAD to GBP Monthly') & ((pd.to_datetime('2021-6-4') < pd.to_datetime(start_date) < pd.to_datetime('2021-9-30'))) & ((pd.to_datetime('2021-6-4') < pd.to_datetime(end_date) < pd.to_datetime('2021-9-30'))) & (pd.to_datetime(start_date) < pd.to_datetime(end_date)):
         forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
         temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > start_date) & (forecast_gbp_monthly2['ds'] <= end_date)]
         temp_value = np.min(temp_df['yhat'].values)
-        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0].date
+        day = temp_df[temp_df['yhat']==temp_value]['ds'].iloc[0]
         value = round(temp_df[temp_df['yhat']==temp_value]['yhat'].iloc[0],4)
 
     else:
-        st.sidebar.write('Prediction not available')
+        day = 'Prediction not available'
+        value = 'Please select proper date'
 
     return day, value
 
 
 def main():
     st.write('Please select Currency and type of prediction!')
-    #df = load_data()
 load_data(selected_currency)
+
+    #df = load_data()
 
 st.sidebar.subheader('Date to obtain best prediction for,')
 start_date = st.sidebar.date_input("Start date", datetime.date(2021, 6, 7))
@@ -898,12 +906,11 @@ ds = datetime.datetime.strptime(start_date,"%Y-%m-%d")
 ds = ds.strftime("%Y-%m-%d")
 de = datetime.datetime.strptime(end_date,"%Y-%m-%d")
 de = de.strftime("%Y-%m-%d")
-day,value = check_submit(ds, de, selected_currency)
+day, value = check_submit(ds, de, selected_currency)
 st.sidebar.write('Best Date: ', day)
 st.sidebar.write('Best Price: ', value)
 
-st.header('Forex Predictor')
-st.markdown(""" """)
+#st.markdown(""" """)
 
 
 
@@ -917,12 +924,14 @@ st.markdown(""" """)
 # About
 expander_bar = st.beta_expander("About")
 expander_bar.markdown("""
-* **Forex Predictor:** This applicaiton mainly targets studends and immigrants who are always looking for a better exchange rates, to save some money just by knowing if the exchange rate is going to be much lower in coming days or months.
+* **Forex Predictor:** This application mainly targets studends and immigrants who are always looking for a better exchange rates, to save some money just by knowing if the exchange rate is going to be much lower in coming days or months.
+
 * **Libraries used:** numpy, pandas, matplotlib, sklearn, fbprophet, plotly, PIL, pickle, streamlit.
 * **Data Sources:** https://ca.finance.yahoo.com/, https://fred.stlouisfed.org/ and https://www150.statcan.gc.ca
 * **Reference for Streamlit Web App:** [Nachiketa Hebbar] - Deploy ML model on Webpage| Python (Streamlit) #1| (https://www.youtube.com/channel/UCJPihOKkiT7TqP7NK9-GtuQ_) & [Chanin Nantasenamat](http://twitter.com/thedataprof) (aka [Data Professor](http://youtube.com/dataprofessor))
 
 """)
+
 
 
 ##* **Python libraries:** streamlit, pandas, pillow, requests, json
