@@ -250,7 +250,7 @@ fig_base_us_monthly.update_xaxes(rangeslider_visible=False, rangeselector=dict( 
 fig_base_us_monthly.layout.update(title_x=0.5)
 fig_base_us_monthly.update_layout(width=800, font_color='grey')
 
-fig_usd_monthly_volatality = px.line(data_usd_monthly, x=data_usd_monthly.index,y= data_usd_monthly['usd_close'].diff(1), hover_data=['usd_open','usd_high','usd_low','usd_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!y', labels={ 'x': "Year", 'y': "Normalized Price"})
+fig_usd_monthly_volatality = px.line(data_usd_monthly, x=data_usd_monthly.index,y= data_usd_monthly['usd_close'].diff(1).mul(data_usd_monthly['usd_close'].diff(1)), hover_data=['usd_open','usd_high','usd_low','usd_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!y', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_usd_monthly_volatality.update_xaxes(rangeslider_visible=False)
 fig_usd_monthly_volatality.update_layout(width=800,  font_color='grey')
 # fig_usd_daily_volatality.layout.update(title = 'sdsadasdsa')
@@ -321,7 +321,7 @@ fig_base_inr_monthly.update_xaxes(rangeslider_visible=True,rangeselector=dict(bu
 fig_base_inr_monthly.layout.update(title_x=0.5)
 fig_base_inr_monthly.update_layout(width=800, font_color='grey')
 
-fig_inr_monthly_volatality = px.line(data_inr_monthly, x=data_inr_monthly.index,y= data_inr_monthly['inr_close'].diff(1), hover_data=['inr_open','inr_high','inr_low','inr_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
+fig_inr_monthly_volatality = px.line(data_inr_monthly, x=data_inr_monthly.index,y= data_inr_monthly['inr_close'].diff(1).mul(data_inr_monthly['inr_close'].diff(1)), hover_data=['inr_open','inr_high','inr_low','inr_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_inr_monthly_volatality.update_xaxes(rangeslider_visible=False)
 fig_inr_monthly_volatality.update_layout(width=800,  font_color='grey')
 # fig_usd_daily_volatality.layout.update(title = 'sdsadasdsa')
@@ -392,7 +392,7 @@ fig_base_gbp_monthly.update_xaxes(rangeslider_visible=True,rangeselector=dict(bu
 fig_base_gbp_monthly.layout.update(title_x=0.5)
 fig_base_gbp_monthly.update_layout(width=800, font_color='grey')
 
-fig_gbp_monthly_volatality = px.line(data_gbp_monthly, x=data_gbp_monthly.index,y= data_gbp_monthly['gbp_close'].diff(1), hover_data=['gbp_open','gbp_high','gbp_low','gbp_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
+fig_gbp_monthly_volatality = px.line(data_gbp_monthly, x=data_gbp_monthly.index,y= data_gbp_monthly['gbp_close'].diff(1).mul(data_gbp_monthly['gbp_close'].diff(1)), hover_data=['gbp_open','gbp_high','gbp_low','gbp_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_gbp_monthly_volatality.update_xaxes(rangeslider_visible=False)
 fig_gbp_monthly_volatality.update_layout(width=800,  font_color='grey')
 # fig_usd_daily_volatality.layout.update(title = 'sdsadasdsa')
@@ -490,7 +490,7 @@ fig_base_us_daily.update_xaxes(rangeslider_visible=False, rangeselector=dict( bu
 fig_base_us_daily.layout.update(title_x=0.5)
 fig_base_us_daily.update_layout(width=800, font_color='grey')
 
-fig_usd_daily_volatality = px.line(data_usd_daily, x=data_usd_daily.index,y= data_usd_daily['usd_close'].diff(1), hover_data=['usd_open','usd_high','usd_low','usd_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
+fig_usd_daily_volatality = px.line(data_usd_daily, x=data_usd_daily.index,y= data_usd_daily['usd_close'].diff(1).mul(data_usd_daily['usd_close'].diff(1)), hover_data=['usd_open','usd_high','usd_low','usd_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_usd_daily_volatality.update_xaxes(rangeslider_visible=False)
 fig_usd_daily_volatality.update_layout(width=800, font_color='grey')
 # fig_usd_daily_volatality.layout.update(title = 'sdsadasdsa')
@@ -556,7 +556,7 @@ fig_base_inr_daily.update_xaxes(rangeslider_visible=False, rangeselector=dict( b
 fig_base_inr_daily.layout.update(title_x=0.5)
 fig_base_inr_daily.update_layout(width=800, font_color='grey')
 
-fig_inr_daily_volatality = px.line(data_inr_daily, x=data_inr_daily.index,y= data_inr_daily['inr_close'].diff(1), hover_data=['inr_open','inr_high','inr_low','inr_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
+fig_inr_daily_volatality = px.line(data_inr_daily, x=data_inr_daily.index,y= data_inr_daily['inr_close'].diff(1).mul(data_inr_daily['inr_close'].diff(1)), hover_data=['inr_open','inr_high','inr_low','inr_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_inr_daily_volatality.update_xaxes(rangeslider_visible=False)
 fig_inr_daily_volatality.update_layout(width=800,  font_color='grey')
 # fig_usd_daily_volatality.layout.update(title = 'sdsadasdsa')
@@ -622,7 +622,7 @@ fig_base_gbp_daily.update_xaxes(rangeslider_visible=False, rangeselector=dict( b
 fig_base_gbp_daily.layout.update(title_x=0.5)
 fig_base_gbp_daily.update_layout(width=800, font_color='grey')
 
-fig_gbp_daily_volatality = px.line(data_gbp_daily, x=data_gbp_daily.index,y= data_gbp_daily['gbp_close'].diff(1), hover_data=['gbp_open','gbp_high','gbp_low','gbp_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
+fig_gbp_daily_volatality = px.line(data_gbp_daily, x=data_gbp_daily.index,y= data_gbp_daily['gbp_close'].diff(1).mul(data_gbp_daily['gbp_close'].diff(1)), hover_data=['gbp_open','gbp_high','gbp_low','gbp_close'], title = 'Market Volatality - The closer it is to 0, the better it is!!!', labels={ 'x': "Year", 'y': "Normalized Price"})
 fig_gbp_daily_volatality.update_xaxes(rangeslider_visible=False)
 fig_gbp_daily_volatality.update_layout(width=800,  font_color='grey')
 # fig_usd_daily_volatality.layout.update(title = 'sdsadasdsa')
