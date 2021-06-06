@@ -884,9 +884,6 @@ def check_submit(start_date, end_date, selected_currency):
     return day, value
 
 
-def main():
-    st.write('Please select Currency and type of prediction!')
-
 load_data(selected_currency)
 
 
