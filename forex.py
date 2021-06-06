@@ -705,6 +705,7 @@ sidebar .sidebar-content {
 # ## Sidebar - Currency price unit
 # selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
 # # prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
+selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
 
 
 @st.cache
@@ -716,7 +717,6 @@ def load_data():
     st.sidebar.header('Predict Exchange Rate against CAD,')
 
     ## Sidebar - Currency price unit
-    selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
     # prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
     if selected_currency == 'CAD to USD Daily':
         period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
@@ -907,9 +907,9 @@ def check_submit():
 st.header('Forex Predictor')
 st.markdown(""" """)
 
-load_data()
+load_data(selected_currency)
 
-df_submit = check_submit()
+df_submit = check_submit(selected_currency)
 st.sidebar.write(df_submit)
 
 #st.write(df)
