@@ -696,26 +696,21 @@ sidebar .sidebar-content {
 </style>
     """, unsafe_allow_html=True)
 #
-# st.sidebar.image(image, width = 300)
-# add_space = """     <br>    """
-# st.sidebar.markdown(add_space, unsafe_allow_html=True)
-#
-# st.sidebar.header('Predict Exchange Rate against CAD,')
+st.sidebar.image(image, width = 300)
+add_space = """     <br>    """
+st.sidebar.markdown(add_space, unsafe_allow_html=True)
+
+st.sidebar.header('Predict Exchange Rate against CAD,')
 #
 # ## Sidebar - Currency price unit
 # selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
 # # prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
 selected_currency = st.sidebar.selectbox('Select Currency', ['CAD to USD Daily','CAD to INR Daily','CAD to GBP Daily','CAD to USD Monthly', 'CAD to INR Monthly',  'CAD to GBP Monthly'])
 
+load_data(selected_currency)
 
 @st.cache
-def load_data():
-    st.sidebar.image(image, width = 300)
-    add_space = """     <br>    """
-    st.sidebar.markdown(add_space, unsafe_allow_html=True)
-
-    st.sidebar.header('Predict Exchange Rate against CAD,')
-
+def load_data(selected_currency):
     ## Sidebar - Currency price unit
     # prediction_type = st.sidebar.selectbox('Type of Prediction', ['none','Daily','Monthly'])
     if selected_currency == 'CAD to USD Daily':
@@ -734,8 +729,6 @@ def load_data():
         cols[1].markdown(""" This prediction was obtained using fbprophet <br> machine learning algorithm. <br> NYSE, Yesterday Price, Inflation and  <br> GDP against Canada were considered for obtaining prediction.""", unsafe_allow_html=True)
         st.title('Explore Forecast with Plots to gain more insights,')
         st.image(usa_daily_components_breakdown_image, width=700)
-
-
 
     elif selected_currency == 'CAD to INR Daily':
         period = st.sidebar.slider('Slide to select # of Days:', 1, 20)
@@ -843,74 +836,74 @@ def main():
 # end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
 # end_date = time.strptime(end_date,"%d/%m/%Y")
 
+st.sidebar.subheader('Date to obtain best prediction for,')
+start_date = st.sidebar.date_input("Start date", datetime.date(2021, 6, 7))
+start_date = time.strptime(start_date,"%d/%m/%Y")
+end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
+end_date = time.strptime(end_date,"%d/%m/%Y")
+submit = check_submit(start_date, end_date)
+st.sidebar.write(submit)
+
 @st.cache
-def check_submit():
-    st.sidebar.subheader('Date to obtain best prediction for,')
-    start_date = st.sidebar.date_input("Start date", datetime.date(2021, 6, 7))
-    start_date = time.strptime(start_date,"%d/%m/%Y")
-    end_date = st.sidebar.date_input("End date", datetime.date(2021, 9, 30))
-    end_date = time.strptime(end_date,"%d/%m/%Y")
-    submit = st.sidebar.button('Get Best Date!')
-    if submit:
-        if (start_date < pd.to_datetime('2021-6-4')) | (end_date > pd.to_datetime('2021-6-4')):
-            if selected_currency == 'CAD to USD Daily':
-                forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
-                temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > start_date) & (forecast_usd_daily2['ds'] <= end_date)]
-                temp_value = np.min(temp_df['yhat'].values)
-                return temp_df[temp_df['yhat']==temp_value][['ds','yhat']
+def check_submit(start_date, end_date, selected_currency):
+    if (start_date < pd.to_datetime('2021-6-4')) | (end_date > pd.to_datetime('2021-6-4')):
+        if selected_currency == 'CAD to USD Daily':
+            forecast_usd_daily2 = forecast_usd_daily[-84:][['ds','yhat']]
+            temp_df = forecast_usd_daily2[(forecast_usd_daily2['ds'] > start_date) & (forecast_usd_daily2['ds'] <= end_date)]
+            temp_value = np.min(temp_df['yhat'].values)
+            return temp_df[temp_df['yhat']==temp_value][['ds','yhat']
                 # return
                 # st.sidebar.write('best day,')
                 # st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-            elif selected_currency == 'CAD to INR Daily':
-                forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
-                temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > start_date) & (forecast_inr_daily2['ds'] <= end_date)]
-                temp_value = np.min(temp_df['yhat'].values)
-                return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
+        elif selected_currency == 'CAD to INR Daily':
+            forecast_inr_daily2 = forecast_inr_daily[-84:][['ds','yhat']]
+            temp_df = forecast_inr_daily2[(forecast_inr_daily2['ds'] > start_date) & (forecast_inr_daily2['ds'] <= end_date)]
+            temp_value = np.min(temp_df['yhat'].values)
+            return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
                 # st.sidebar.write('best day,')
                 # st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-            elif selected_currency == 'CAD to GBP Daily':
-                forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
-                temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > start_date) & (forecast_gbp_daily2['ds'] <= end_date)]
-                temp_value = np.min(temp_df['yhat'].values)
-                return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
+        elif selected_currency == 'CAD to GBP Daily':
+            forecast_gbp_daily2 = forecast_gbp_daily[-84:][['ds','yhat']]
+            temp_df = forecast_gbp_daily2[(forecast_gbp_daily2['ds'] > start_date) & (forecast_gbp_daily2['ds'] <= end_date)]
+            temp_value = np.min(temp_df['yhat'].values)
+            return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
                 # st.sidebar.write('best day,')
                 # st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-            elif selected_currency == 'CAD to USD Monthly':
-                forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
-                temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > start_date) & (forecast_usd_monthly2['ds'] <= end_date)]
-                temp_value = np.min(temp_df['yhat'].values)
-                return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
+        elif selected_currency == 'CAD to USD Monthly':
+            forecast_usd_monthly2 = forecast_usd_monthly[-4:][['ds','yhat']]
+            temp_df = forecast_usd_monthly2[(forecast_usd_monthly2['ds'] > start_date) & (forecast_usd_monthly2['ds'] <= end_date)]
+            temp_value = np.min(temp_df['yhat'].values)
+            return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
                 # st.sidebar.write('best month,')
                 # st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-            elif selected_currency == 'CAD to INR Monthly':
-                forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
-                temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > start_date) & (forecast_inr_monthly2['ds'] <= end_date)]
-                temp_value = np.min(temp_df['yhat'].values)
-                return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
+        elif selected_currency == 'CAD to INR Monthly':
+            forecast_inr_monthly2 = forecast_inr_monthly[-4:][['ds','yhat']]
+            temp_df = forecast_inr_monthly2[(forecast_inr_monthly2['ds'] > start_date) & (forecast_inr_monthly2['ds'] <= end_date)]
+            temp_value = np.min(temp_df['yhat'].values)
+            return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
                 # st.sidebar.write('best month,')
                 # st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-            elif selected_currency == 'CAD to GBP Daily':
-                forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
-                temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > start_date) & (forecast_gbp_monthly2['ds'] <= end_date)]
-                temp_value = np.min(temp_df['yhat'].values)
-                return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
+        elif selected_currency == 'CAD to GBP Daily':
+            forecast_gbp_monthly2 = forecast_gbp_monthly[-4:][['ds','yhat']]
+            temp_df = forecast_gbp_monthly2[(forecast_gbp_monthly2['ds'] > start_date) & (forecast_gbp_monthly2['ds'] <= end_date)]
+            temp_value = np.min(temp_df['yhat'].values)
+            return temp_df[temp_df['yhat']==temp_value][['ds','yhat']]
                 # st.sidebar.write('best month,')
                 # st.sidebar.write(temp_df[temp_df['yhat']==temp_value][['ds','yhat']])
-            else:
-                res = 'prediction not available'
-                return res
-                # st.sidebar.write('Prediction not available!')
         else:
             res = 'prediction not available'
             return res
+                # st.sidebar.write('Prediction not available!')
+    else:
+        res = 'prediction not available'
+        return res
 
 st.header('Forex Predictor')
 st.markdown(""" """)
 
-load_data(selected_currency)
 
-df_submit = check_submit(selected_currency)
-st.sidebar.write(df_submit)
+
+
 
 #st.write(df)
 
